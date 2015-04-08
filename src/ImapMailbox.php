@@ -126,7 +126,11 @@ class ImapMailbox {
 
 	public function getListingFolders() {
 		$folders = imap_list($this->getImapStream(), $this->imapPath, "*");
-		foreach ($folders as $key => $folder)
+		if( $folders == null )
+        {
+            return false ;
+        }
+        foreach ($folders as $key => $folder)
 		{
 			$folder = str_replace($this->imapPath, "", imap_utf7_decode($folder));
 			$folders[ $key  ] = $folder;
