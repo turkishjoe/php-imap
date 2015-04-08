@@ -140,8 +140,8 @@ class ImapMailbox
             return false;
         }
         foreach ($folders as $key => $folder) {
-            $folder = mb_convert_encoding($folder, "UTF-8", "UTF7-IMAP");//str_replace($this->imapPath, "", imap_utf7_decode($folder));
-            $folders[$key] = $folder;
+            $folders[$key]['converted'] =  mb_convert_encoding($folder, "UTF-8", "UTF7-IMAP");//str_replace($this->imapPath, "", imap_utf7_decode($folder));
+            $folders[$key]['original'] = $folder;
         }
         return $folders;
     }
