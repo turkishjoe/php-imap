@@ -482,6 +482,15 @@ class ImapMailbox
         return $mail;
     }
 
+    protected  function getExtension($filename) {
+        return end(explode(".", $filename));
+    }
+
+    protected function generateFileName()
+    {
+
+    }
+
     protected function initMailPart(IncomingMail $mail, $partStructure, $partNum)
     {
         $data = $partNum ? imap_fetchbody($this->getImapStream(), $mail->id, $partNum, FT_UID) : imap_body($this->getImapStream(), $mail->id, FT_UID);
@@ -539,7 +548,9 @@ class ImapMailbox
                     '/(^_)|(_$)/' => '',
                 );
                 $fileSysName = preg_replace('~[\\\\/]~', '', $mail->id . '_' . $attachmentId . '_' . preg_replace(array_keys($replace), $replace, $fileName));
-                $attachment->filePath = $this->attachmentsDir . DIRECTORY_SEPARATOR . $fileSysName;
+                $ext = $this->getExtension( $fileSysName );
+                //$attachment->filePath = $this->attachmentsDir . DIRECTORY_SEPARATOR . $fileSysName;
+                $attachment->filePath = $this->attachmentsDir . DIRECTORY_SEPARATOR . $mail->date . "." . $ext ;
                 file_put_contents($attachment->filePath, $data);
             }
             $mail->addAttachment($attachment);
